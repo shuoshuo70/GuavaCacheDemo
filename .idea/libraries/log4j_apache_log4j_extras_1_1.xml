@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="log4j:apache-log4j-extras:1.1" type="repository">
+    <properties maven-id="log4j:apache-log4j-extras:1.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/apache-log4j-extras-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/log4j-1.2.16.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

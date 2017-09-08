@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.freemarker.manager.classname" value="org.phw.web.ftl.OdmFtlManager" />
+    <constant name="struts.action.extension" value="" />
+    <constant name="struts.multipart.maxSize" value="10485760"/>
+    <bean type="org.apache.struts2.views.TagLibrary" name="phw" class="com.ailk.mall.common.views.PhwTagLibrary" />
+    <bean type="org.apache.struts2.convention.ActionConfigBuilder" name="convention2" class="org.phw.struts2.convention.PhwActionConfigBuilder" />
+    <constant name="struts.convention.action.locationPatterns"
+        value="classpath*:com/ailk/**/*Action.class,classpath*:org/phw/web/**/*Action.class" />
+    <constant name="struts.convention.actionConfigBuilder" value="convention2" />
+    <constant name="struts.convention.default.parent.package" value="MallWeb" />
+    <package name="MallWeb" extends="json-default">
+        <result-types>
+            <result-type name="freemarker" class="org.apache.struts2.views.freemarker.FreemarkerResult" default="true" />
+        </result-types>
+        <!-- 拦截器配置 -->
+        <interceptors>
+            <interceptor name="rightVeifyInterceptor" class="com.demo.interceptor.RightVerifyInterceptor"></interceptor>
+        </interceptors>
+
+    </package>
+</struts>
