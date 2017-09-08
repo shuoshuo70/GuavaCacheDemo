@@ -102,8 +102,21 @@ public class RightVerifyInterceptor extends HandlerInterceptorAdapter {
             return false;
         }
         //从缓存或数据库中取出该用户的权限
-        List<Map> rights = RightVerifyCache.queryRightList((String) staffMap.get("STAFF_ID"));
-        return true;
+        List<Map> rights = RightVerifyCache.getRightsList((String) staffMap.get("STAFF_ID"), (Long) staffMap.get("UPDATE_TIME"));
+
+        if (rights.size() == 0) {
+            return false;
+        }
+
+        //查看用户是否拥有正在申请的权限
+        for(Map right : rights) {
+            String rightMenu = (String) right.get("MENU_ID");
+            if(menuList.contains(rightMenu)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
