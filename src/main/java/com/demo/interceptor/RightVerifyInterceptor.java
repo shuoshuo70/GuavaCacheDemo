@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,8 @@ public class RightVerifyInterceptor extends HandlerInterceptorAdapter {
 
     private static final String COOKIE_KEY = "Admin";
     private static final long EXPIREDTIME = 600000L;
-    private List<String> menuList;
+    private List<String> menuList = new ArrayList<String>();
+    private static final int LOGIN_VERIFY_FAILD = 701;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -64,7 +66,7 @@ public class RightVerifyInterceptor extends HandlerInterceptorAdapter {
         Pair<Boolean, Map> retValid = isLoginSucc(request, response);
         if (retValid.getKey() == false) {
             //跳转到登录页面
-//            redirectLogin(request, response);
+            redirectLogin(request, response);
             return false;
         }
 
@@ -75,6 +77,35 @@ public class RightVerifyInterceptor extends HandlerInterceptorAdapter {
         }
         logger.info("权限校验成功");
         return true;
+    }
+
+    /**
+     * 跳转至登录页面或错误页面
+     * @param request
+     * @param response
+     */
+    private void redirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //异步请求 -> 登录页面，同步请求 -> 错误页面
+        if(isAjaxRequest(request)) {
+            response.sendError(LOGIN_VERIFY_FAILD, "login");
+        } else {
+            response.sendRedirect(request.getContextPath() + "error");
+        }
+    }
+
+    /**
+     * 判断是否是异步请求
+     * @param request
+     * @return
+     */
+    private boolean isAjaxRequest(HttpServletRequest request) {
+        String header = request.getHeader("X-Requested-With");
+
+        if(header != null && "XMLHttpRequest".equals(header)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
