@@ -87,7 +87,7 @@ public class RightVerifyInterceptor extends HandlerInterceptorAdapter {
     private void redirectLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //异步请求 -> 登录页面，同步请求 -> 错误页面
         if(isAjaxRequest(request)) {
-            response.sendError(LOGIN_VERIFY_FAILD, "login");
+            response.sendError(LOGIN_VERIFY_FAILD, "/login");
         } else {
             response.sendRedirect(request.getContextPath() + "error");
         }
